@@ -1,5 +1,5 @@
 export class UserService {
-  user: {
+  user = {
     name: 'Max'
   };
 }
