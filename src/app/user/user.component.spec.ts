@@ -1,4 +1,4 @@
-import { async, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { UserComponent } from './user.component';
 import { UserService } from './user.service';
 import { DataService } from '../shared/data.service';
@@ -64,5 +64,15 @@ describe('Component: User:', () => {
     });
   }));
 
+  it('should fetch data successfully if called asynchronously with fakeAsync and tick', fakeAsync(() => {
+    let fixture = TestBed.createComponent(UserComponent);
+    let app = fixture.debugElement.componentInstance;
+    let dataService = fixture.debugElement.injector.get(DataService);
+    let spy = spyOn(dataService, 'getDetails')
+      .and.returnValue(Promise.resolve('Data')); //тут мы заменяем реальный вызов на fake, но без тоже работает
+    fixture.detectChanges();
+    tick();
+    expect(app.data).toBe('Data');
+  }));
 
 });
