@@ -1,4 +1,4 @@
-import { async, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { async, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { UserComponent } from './user.component';
 import { UserService } from './user.service';
 import { DataService } from '../shared/data.service';
@@ -64,7 +64,7 @@ describe('Component: User:', () => {
     });
   }));
 
-  it('should fetch data successfully if called asynchronously with fakeAsync and tick', fakeAsync(() => {
+  it('should fetch data successfully if called asynchronously with fakeAsync and tick 1', fakeAsync(() => {
     let fixture = TestBed.createComponent(UserComponent);
     let app = fixture.debugElement.componentInstance;
     let dataService = fixture.debugElement.injector.get(DataService);
@@ -72,6 +72,40 @@ describe('Component: User:', () => {
       .and.returnValue(Promise.resolve('Data')); //тут мы заменяем реальный вызов на fake, но без тоже работает
     fixture.detectChanges();
     tick();
+    expect(app.data).toBe('Data');
+  }));
+
+  it('should fetch data successfully if called asynchronously with fakeAsync and tick 2', fakeAsync(() => {
+    let fixture = TestBed.createComponent(UserComponent);
+    let app = fixture.debugElement.componentInstance;
+    let dataService = fixture.debugElement.injector.get(DataService);
+    // let spy = spyOn(dataService, 'getDetails')
+    //   .and.returnValue(Promise.resolve('Data')); //тут мы заменяем реальный вызов на fake, но без тоже работает
+    fixture.detectChanges();
+    tick(3700);
+    expect(app.data).toBe('Data');
+  }));
+
+  it('should fetch data successfully if called asynchronously with fakeAsync and tick 3', fakeAsync(() => {
+    let fixture = TestBed.createComponent(UserComponent);
+    let app = fixture.debugElement.componentInstance;
+    let dataService = fixture.debugElement.injector.get(DataService);
+    // let spy = spyOn(dataService, 'getDetails')
+    //   .and.returnValue(Promise.resolve('Data')); //тут мы заменяем реальный вызов на fake, но без тоже работает
+    fixture.detectChanges();
+    tick(3699);
+    tick(1);
+    expect(app.data).toBe('Data');
+  }));
+
+  it('should fetch data successfully if called asynchronously with fakeAsync and tick 4', fakeAsync(() => {
+    let fixture = TestBed.createComponent(UserComponent);
+    let app = fixture.debugElement.componentInstance;
+    let dataService = fixture.debugElement.injector.get(DataService);
+    // let spy = spyOn(dataService, 'getDetails')
+    //   .and.returnValue(Promise.resolve('Data')); //тут мы заменяем реальный вызов на fake, но без тоже работает
+    fixture.detectChanges();
+    flush();
     expect(app.data).toBe('Data');
   }));
 
