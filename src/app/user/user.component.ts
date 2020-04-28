@@ -13,7 +13,8 @@ export class UserComponent implements OnInit {
   isLoggedIn = false;
   data: string;
 
-  constructor(private userService: UserService, private dataService: DataService) {
+  // use public services or other stuff in case of usage that in template or outside
+  constructor(public userService: UserService, private dataService: DataService) {
   }
 
   ngOnInit() {
