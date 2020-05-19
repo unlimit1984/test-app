@@ -2,12 +2,14 @@ import { async, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { UserComponent } from './user.component';
 import { UserService } from './user.service';
 import { DataService } from '../shared/data.service';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 
 describe('Component: User:', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [UserComponent]
+      declarations: [UserComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     });
   });
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from './user.service';
 import { DataService } from '../shared/data.service';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -23,6 +24,11 @@ export class UserComponent implements OnInit {
       this.data = data;
       console.log(data);
     });
+
+    const array = [10, 20, 30];
+    const result = from([array]);
+
+    result.subscribe(x => console.log('one tick x: ', x));
   }
 
 }
