@@ -1,6 +1,6 @@
 import { TodosComponent } from './todos.component';
 import { TodoService } from './todo.service';
-import { from } from 'rxjs';
+import { EMPTY, from, throwError } from 'rxjs';
 
 describe('TodosComponent', () => {
   let component: TodosComponent;
@@ -19,5 +19,33 @@ describe('TodosComponent', () => {
     expect(component.todos.length).toBeGreaterThan(0);
     expect(component.todos.length).toBe(3);
     expect(component.todos).toBe(todos);
+  });
+
+  it('should call the server to save the changes when a new todo item is added', () => {
+    let spy = spyOn(service, 'add').and.callFake(t => EMPTY);
+
+    component.add();
+
+    expect(spy).toHaveBeenCalled();
+    // expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('should add a new todo item returned from the server', () => {
+    let todo = {id: 1};
+    // let spy = spyOn(service, 'add').and.callFake(t => from([{id: 1}]));
+    spyOn(service, 'add').and.returnValue(from([todo]));
+
+    component.add();
+
+    expect(component.todos.indexOf(todo)).toBeGreaterThan(-1);
+  });
+
+  it('should set the message property if server returns an error when adding a new todo', () => {
+    let error = 'error from the server';
+    spyOn(service, 'add').and.returnValue(throwError(error));
+
+    component.add();
+
+    expect(component.message).toBe(error);
   });
 });
